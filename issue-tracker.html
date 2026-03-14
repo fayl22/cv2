@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SharePoint Issue Tracker</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #102a43;
+      --muted: #486581;
+      --primary: #0b69ff;
+      --border: #d9e2ec;
+      --error: #d64545;
+      --success: #2f9e44;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.4;
+    }
+
+    .container {
+      width: min(1050px, 92vw);
+      margin: 2rem auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      box-shadow: 0 4px 18px rgba(16, 42, 67, 0.06);
+    }
+
+    h1, h2 { margin-top: 0; }
+
+    .config-grid,
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: .75rem;
+    }
+
+    label {
+      display: block;
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: .35rem;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: .6rem .7rem;
+      font: inherit;
+    }
+
+    textarea { min-height: 95px; resize: vertical; }
+
+    button {
+      width: auto;
+      cursor: pointer;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      padding: .65rem 1rem;
+    }
+
+    button.secondary {
+      background: #334e68;
+    }
+
+    button.ghost {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .8rem;
+    }
+
+    .status-message {
+      margin: .4rem 0 0;
+      min-height: 1.2rem;
+      font-size: .92rem;
+    }
+
+    .status-message.error { color: var(--error); }
+    .status-message.success { color: var(--success); }
+
+    .table-wrap { overflow: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: .7rem .45rem;
+      vertical-align: top;
+    }
+
+    th { color: #243b53; font-size: .92rem; }
+
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: .2rem .6rem;
+      font-size: .76rem;
+      font-weight: 600;
+      background: #e6f0ff;
+      color: #084298;
+    }
+
+    .small { font-size: .82rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>Issue Tracker (SharePoint List Backend)</h1>
+      <p class="small">This app reads and writes issues to a SharePoint list by using the SharePoint REST API.</p>
+      <div class="config-grid">
+        <div>
+          <label for="siteUrl">SharePoint site URL</label>
+          <input id="siteUrl" placeholder="https://contoso.sharepoint.com/sites/Engineering" />
+        </div>
+        <div>
+          <label for="listTitle">List title</label>
+          <input id="listTitle" value="Issues" />
+        </div>
+        <div>
+          <label for="authToken">OAuth bearer token (optional)</label>
+          <input id="authToken" placeholder="eyJ..." />
+        </div>
+      </div>
+      <div class="row-actions">
+        <button id="saveConfigBtn" class="secondary" type="button">Save Config</button>
+        <button id="loadIssuesBtn" type="button">Load Issues</button>
+      </div>
+      <p id="configStatus" class="status-message"></p>
+    </section>
+
+    <section class="card">
+      <h2>Create Issue</h2>
+      <form id="issueForm">
+        <div class="form-grid">
+          <div>
+            <label for="title">Title *</label>
+            <input id="title" required />
+          </div>
+          <div>
+            <label for="priority">Priority</label>
+            <select id="priority">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Critical</option>
+            </select>
+          </div>
+          <div>
+            <label for="status">Status</label>
+            <select id="status">
+              <option selected>Open</option>
+              <option>In Progress</option>
+              <option>Blocked</option>
+              <option>Resolved</option>
+              <option>Closed</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="description">Description</label>
+          <textarea id="description"></textarea>
+        </div>
+        <div class="row-actions">
+          <button type="submit">Create Issue</button>
+        </div>
+      </form>
+      <p id="createStatus" class="status-message"></p>
+    </section>
+
+    <section class="card">
+      <h2>Issues</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="issuesBody">
+            <tr><td colspan="7" class="small">Load issues to get started.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="issuesStatus" class="status-message"></p>
+    </section>
+  </main>
+
+  <script src="sharepoint-issue-tracker.js"></script>
+</body>
+</html>

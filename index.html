@@ -1,43 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">  
-    <title>Fayl</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World | Fayl</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #24302b;
+            --muted: #66736c;
+            --paper: #f7f4ed;
+            --gold: #bd7d36;
+            --sage: #dce6dc;
+            --line: rgba(36, 48, 43, 0.14);
+        }
 
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 28px clamp(24px, 6vw, 88px) 36px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto auto;
+            width: min(46vw, 560px);
+            height: min(70vh, 650px);
+            background: var(--sage);
+            clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 74%);
+            opacity: 0.72;
+            z-index: 0;
+        }
+
+        header, main, footer { position: relative; z-index: 1; }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 18px;
+        }
+
+        .mark { font-weight: 700; letter-spacing: 0.16em; font-size: 0.8rem; }
+        .eyebrow { color: var(--gold); font-size: 0.76rem; letter-spacing: 0.18em; text-transform: uppercase; }
+
+        main {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.8fr) minmax(300px, 1.2fr);
+            align-items: center;
+            gap: clamp(32px, 8vw, 130px);
+            max-width: 1120px;
+            width: 100%;
+            margin: auto;
+            padding: 54px 0 74px;
+        }
+
+        .image-wrap {
+            display: grid;
+            place-items: center;
+            min-height: 360px;
+            background: radial-gradient(circle, rgba(255,255,255,0.82) 0 37%, transparent 38%);
+        }
+
+        .image-wrap img {
+            width: min(72%, 280px);
+            max-height: 390px;
+            object-fit: contain;
+            filter: drop-shadow(12px 16px 0 rgba(189, 125, 54, 0.13));
+            animation: rise 0.8s ease-out both;
+        }
+
+        h1 {
+            max-width: 620px;
+            margin: 12px 0 22px;
+            font-family: "Playfair Display", serif;
+            font-size: clamp(3.5rem, 9vw, 7.5rem);
+            line-height: 0.91;
+            letter-spacing: -0.02em;
+        }
+
+        h1 span { color: var(--gold); }
+        .intro { max-width: 480px; color: var(--muted); font-size: clamp(1rem, 1.7vw, 1.18rem); line-height: 1.75; }
+
+        .actions { display: flex; gap: 14px; align-items: center; margin-top: 32px; }
+        .button { display: inline-block; padding: 13px 20px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: transform 0.2s, background 0.2s; }
+        .button:hover { transform: translateY(-3px); background: var(--ink); color: var(--paper); }
+        .button.secondary { border-color: transparent; color: var(--muted); }
+
+        footer { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 700px) {
+            .page { padding: 22px 22px 28px; }
+            .page::before { width: 75vw; height: 44vh; }
+            main { grid-template-columns: 1fr; gap: 10px; padding: 40px 0 48px; }
+            .image-wrap { min-height: 250px; order: 2; }
+            .image-wrap img { width: 180px; max-height: 270px; }
+            .copy { order: 1; }
+            h1 { font-size: clamp(3.8rem, 19vw, 6rem); }
+            footer { gap: 10px; flex-wrap: wrap; }
+        }
+    </style>
+</head>
 <body>
-    <table cellspacing ="30">
-        <tr>
-            <td><img src="img/xcxzcxc.png" alt="holy cross"></td><td><h1>FAYL</h1>
-                <p><em>this is personal website of <strong><a href="https://www.google.com/">FAYL</a></strong></em></p>
-                <br>
-                <p>i am from tigray i have mastster degree on this topic which is web development </p>
-                <hr size = 3 noshade>
-                <h3>education and growth</h3>
-                <p>i have a bachlor degree in cotm and i am growing i guess</p>
-                <hr size=3 noshade>
-                <h3>schools i have learn</h3>
-                <ul>
-                    <li>catholic kg </li>
-                    <li>selam</li>
-                    <li>high school</li>
-                </ul></td>
-    
-       </tr>
-    </table>
-    <hr>
-    <table>
-        <h3>skills</h3>
-        <tr>
-            <td>reading </td><td> ⭐⭐</td>
-            <td>listening</td><td>⭐⭐</td>
-        </tr>
-        <tr>
-            <td>writing</td><td>⭐⭐⭐</td>
-            <td>speaking</td><td>⭐⭐⭐⭐</td>
-        </tr>
-    </table>
-    <h3><a href="contact me.html">contact me</a> </h3>
-    
+    <div class="page">
+        <header>
+            <div class="mark">FAYL / 01</div>
+            <div class="eyebrow">A small beginning</div>
+        </header>
+        <main>
+            <div class="image-wrap">
+                <img src="img/xcxzcxc.png" alt="Decorative Ethiopian cross">
+            </div>
+            <section class="copy">
+                <div class="eyebrow">Welcome to my corner of the web</div>
+                <h1>Hello<br><span>World.</span></h1>
+                <p class="intro">A simple space for ideas, experiments, and the things I am learning while building for the web.</p>
+                <div class="actions">
+                    <a class="button" href="contact me.html">Say hello &rarr;</a>
+                    <a class="button secondary" href="README.md">About this page</a>
+                </div>
+            </section>
+        </main>
+        <footer><span>Built with curiosity</span><span>Est. 2024</span></footer>
+    </div>
 </body>
 </html>
